@@ -900,14 +900,40 @@
       selectTamanho.innerHTML = `<option value="m">Tam: M</option><option value="g">Tam: G</option>`;
       divTamanho.appendChild(selectTamanho);
 
-      llet divQtd = document.createElement('div');
+      let divQtd = document.createElement('div');
       divQtd.className = 'field-qtd';
-      divQtd.innerHTML = `<label>Quantidade:</label>
-        <div class="qtd-controle-container">
-          <button type="button" class="qtd-btn" onclick="alterarQtdPrato(this, -1)">-</button>
-          <input type="number" class="input-qtd-prato qtd-prato" value="1" min="1" readonly onchange="calcularTotal()">
-          <button type="button" class="qtd-btn" onclick="alterarQtdPrato(this, 1)">+</button>
-        </div>`;
+      
+      let labelQtd = document.createElement('label');
+      labelQtd.textContent = 'Quantidade:';
+      divQtd.appendChild(labelQtd);
+
+      let qtdContainer = document.createElement('div');
+      qtdContainer.className = 'qtd-controle-container';
+
+      let btnMenos = document.createElement('button');
+      btnMenos.type = 'button';
+      btnMenos.className = 'qtd-btn';
+      btnMenos.textContent = '-';
+      btnMenos.onclick = function() { alterarQtdPrato(this, -1); };
+
+      let inputQtd = document.createElement('input');
+      inputQtd.type = 'number';
+      inputQtd.className = 'input-qtd-prato qtd-prato';
+      inputQtd.value = 1;
+      inputQtd.min = 1;
+      inputQtd.readOnly = true;
+      inputQtd.onchange = calcularTotal;
+
+      let btnMais = document.createElement('button');
+      btnMais.type = 'button';
+      btnMais.className = 'qtd-btn';
+      btnMais.textContent = '+';
+      btnMais.onclick = function() { alterarQtdPrato(this, 1); };
+
+      qtdContainer.appendChild(btnMenos);
+      qtdContainer.appendChild(inputQtd);
+      qtdContainer.appendChild(btnMais);
+      divQtd.appendChild(qtdContainer);
 
       subRow.appendChild(divTamanho);
       subRow.appendChild(divQtd);
