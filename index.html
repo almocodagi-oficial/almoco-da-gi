@@ -1053,6 +1053,25 @@
       calcularTotal();
     }
 
+    function alterarQtdAdicional(btn, delta) {
+      let container = btn.parentElement;
+      let input = container.querySelector('.qtd-adicional');
+      let valorAtual = parseInt(input.value) || 1;
+      let novoValor = valorAtual + delta;
+      if (novoValor < 1) novoValor = 1;
+      input.value = novoValor;
+      
+      let card = btn.closest('.adicional-card');
+      let chk = card.querySelector('.adicional-chk');
+      if (!chk.checked) {
+        chk.checked = true;
+        card.classList.add('selecionado');
+      }
+      
+      calcularTotal();
+    }
+
+    
     function verificarTroco() {
       var pag = document.getElementById('pagamento').value;
       var grupoTroco = document.getElementById('grupoTroco');
