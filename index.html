@@ -58,9 +58,42 @@
     
     .item-top-section { display: flex; flex-direction: column-reverse; gap: 12px; margin-bottom: 10px; }
     .item-left-side { display: flex; flex-direction: column; width: 100%; }
-    .item-sub-row { display: flex; gap: 10px; }
-    .field-tamanho { flex: 2; }
+    .item-sub-row { display: flex; gap: 10px; width: 100%; }
+    .field-tamanho { flex: 1; }
     .field-qtd { flex: 1; }
+
+    .qtd-controle-container {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+      overflow: hidden;
+      height: 46px;
+    }
+    .qtd-btn {
+      background: #f1f5f9;
+      border: none;
+      color: #334155;
+      font-size: 16px;
+      font-weight: bold;
+      width: 36px;
+      height: 100%;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .qtd-btn:hover {
+      background: #e2e8f0;
+    }
+    .input-qtd-prato {
+      flex: 1;
+      border: none !important;
+      text-align: center;
+      font-size: 16px;
+      background: transparent;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
 
     /* Foto do Prato Principal - Vertical Imponente */
     .prato-foto-side { width: 100%; height: 250px; border-radius: 10px; overflow: hidden; border: 1px solid #ced4da; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 12px; }
@@ -866,16 +899,15 @@
       selectTamanho.innerHTML = `<option value="m">Tam: M</option><option value="g">Tam: G</option>`;
       divTamanho.appendChild(selectTamanho);
 
-      let divQtd = document.createElement('div');
+      llet divQtd = document.createElement('div');
       divQtd.className = 'field-qtd';
-      divQtd.innerHTML = `<label>Quantidade:</label>`;
-      let inputQtd = document.createElement('input');
-      inputQtd.type = 'number';
-      inputQtd.className = 'qtd-prato';
-      inputQtd.value = 1;
-      inputQtd.min = 1;
-      inputQtd.oninput = calcularTotal;
-      divQtd.appendChild(inputQtd);
+      divQtd.innerHTML = `<label>Quantidade:</label>
+        <div class="qtd-controle-container">
+          <button type="button" class="qtd-btn" onclick="alterarQtdPrato(this, -1)">-</button>
+          <input type="number" class="input-qtd-prato qtd-prato" value="1" min="1" readonly onchange="calcularTotal()">
+          <button type="button" class="qtd-btn" onclick="alterarQtdPrato(this, 1)">+</button>
+        </div>
+      `;
 
       subRow.appendChild(divTamanho);
       subRow.appendChild(divQtd);
@@ -983,6 +1015,16 @@
       const linhasAtuais = document.getElementById('listaPratosContainer').querySelectorAll('.item-row').length;
       const btn = document.getElementById('btnAdicionarPrato');
       btn.style.display = linhasAtuais >= 5 ? 'none' : 'block';
+    }
+
+    function alterarQtdPrato(btn, delta) {
+      let container = btn.parentElement;
+      let input = container.querySelector('.qtd-prato');
+      let valorAtual = parseInt(input.value) || 1;
+      let novoValor = valorAtual + delta;
+      if (novoValor < 1) novoValor = 1;
+      input.value = novoValor;
+      calcularTotal();
     }
 
     function verificarTroco() {
